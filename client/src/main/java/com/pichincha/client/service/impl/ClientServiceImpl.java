@@ -40,7 +40,7 @@ public class ClientServiceImpl implements ClientService {
 
   @Override
   public void updateClient(Long id, ClientDto clientDto) {
-    log.info("Updating client with ID: {}", id);
+    log.info("Update client with id: {}", id);
     findClientById(id)
         .orElseThrow(() -> new NotFoundException(String.format(CLIENT_NOT_FOUNDED, id)));
     clientDto.setId(id);
@@ -49,7 +49,10 @@ public class ClientServiceImpl implements ClientService {
 
   @Override
   public void deleteClient(Long id) {
-
+    log.info("Delete client with id: {}", id);
+    findClientById(id)
+        .orElseThrow(() -> new NotFoundException(String.format(CLIENT_NOT_FOUNDED, id)));
+    clientRepository.deleteById(id);
   }
 
   @Override
