@@ -79,7 +79,8 @@ public class AccountServiceImpl implements AccountService {
 
   @Override
   public Optional<AccountDto> findAccountByNumber(String number) {
-    return Optional.empty();
+    log.info("Find account with number: {}", number);
+    return accountRepository.findByNumber(number).map(accountMapper::toDto);
   }
 
   @Override
