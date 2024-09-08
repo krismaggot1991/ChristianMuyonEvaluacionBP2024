@@ -73,7 +73,8 @@ public class AccountServiceImpl implements AccountService {
 
   @Override
   public Optional<AccountDto> findAccountById(Long id) {
-    return Optional.empty();
+    log.info("Find account with id: {}", id);
+    return accountRepository.findById(id).map(accountMapper::toDto);
   }
 
   @Override
