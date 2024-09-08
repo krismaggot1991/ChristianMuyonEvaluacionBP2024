@@ -110,6 +110,7 @@ public class MovementServiceImpl implements MovementService {
 
   @Override
   public List<MovementDto> findAllMovements() {
-    return null;
+    log.info("Find all movements");
+    return movementRepository.findAll().stream().map(movementMapper::toDto).toList();
   }
 }
