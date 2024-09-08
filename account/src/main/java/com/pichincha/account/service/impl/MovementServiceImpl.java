@@ -96,7 +96,10 @@ public class MovementServiceImpl implements MovementService {
 
   @Override
   public void deleteMovement(Long id) {
-
+    log.info("Deleting movement with ID: {}", id);
+    findMovementById(id)
+        .orElseThrow(() -> new AccountNotFoundException(String.format(MOVEMENT_NOT_FOUND_MESSAGE, id)));
+    movementRepository.deleteById(id);
   }
 
   @Override
