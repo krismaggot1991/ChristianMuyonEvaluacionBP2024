@@ -104,7 +104,8 @@ public class MovementServiceImpl implements MovementService {
 
   @Override
   public Optional<MovementDto> findMovementById(Long id) {
-    return Optional.empty();
+    log.info("Delete movement with id: {}", id);
+    return movementRepository.findById(id).map(movementMapper::toDto);
   }
 
   @Override
