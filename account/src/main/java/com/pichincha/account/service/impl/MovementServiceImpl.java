@@ -1,6 +1,7 @@
 package com.pichincha.account.service.impl;
 
 import static com.pichincha.account.util.AccountConstants.ACCOUNT_NOT_FOUND_MESSAGE;
+import static com.pichincha.account.util.AccountConstants.MOVEMENT_NOT_FOUND_MESSAGE;
 import static lombok.AccessLevel.PRIVATE;
 
 import com.pichincha.account.domain.entity.enums.MovementTypeEnum;
@@ -84,7 +85,13 @@ public class MovementServiceImpl implements MovementService {
 
   @Override
   public void updateMovement(Long id, MovementDto movementDto) {
-
+    log.info("Update movement for account with if: {}", movementDto.getAccountId());
+    findMovementById(id)
+        .orElseThrow(() -> new AccountNotFoundException(String.format(MOVEMENT_NOT_FOUND_MESSAGE, id)));
+    AccountDto accountDto = findAccountByNumber(movementDto.getAccountNumber());
+    movementDto.setAccountId(accountDto.getId());
+    movementDto.setId(id);
+    movementRepository.save(movementMapper.toEntity(movementDto));
   }
 
   @Override
