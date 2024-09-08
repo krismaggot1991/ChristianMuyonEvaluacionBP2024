@@ -69,6 +69,7 @@ public class ClientServiceImpl implements ClientService {
 
   @Override
   public List<ClientDto> findAllClients() {
-    return null;
+    log.info("Find all clients");
+    return clientRepository.findAll().stream().map(clientMapper::toDto).toList();
   }
 }
