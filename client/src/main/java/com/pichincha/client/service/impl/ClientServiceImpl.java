@@ -1,8 +1,10 @@
 package com.pichincha.client.service.impl;
 
+import static com.pichincha.client.util.Constants.CLIENT_NOT_FOUNDED;
 import static lombok.AccessLevel.PRIVATE;
 
 import com.pichincha.client.domain.entity.Client;
+import com.pichincha.client.exception.NotFoundException;
 import com.pichincha.client.repository.ClientRepository;
 import com.pichincha.client.service.ClientService;
 import com.pichincha.client.service.dto.ClientDto;
@@ -38,7 +40,11 @@ public class ClientServiceImpl implements ClientService {
 
   @Override
   public void updateClient(Long id, ClientDto clientDto) {
-
+    log.info("Updating client with ID: {}", id);
+    findClientById(id)
+        .orElseThrow(() -> new NotFoundException(String.format(CLIENT_NOT_FOUNDED, id)));
+    clientDto.setId(id);
+    clientRepository.save(clientMapper.toEntity(clientDto));
   }
 
   @Override
