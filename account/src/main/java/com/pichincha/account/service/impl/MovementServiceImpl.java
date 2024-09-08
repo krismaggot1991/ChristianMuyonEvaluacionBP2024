@@ -78,7 +78,8 @@ public class MovementServiceImpl implements MovementService {
 
   @Override
   public void saveMovementsList(List<MovementDto> movementDtoList) {
-
+    log.info("Save new movements list {}", movementDtoList);
+    movementDtoList.forEach(this::saveMovement);
   }
 
   @Override
