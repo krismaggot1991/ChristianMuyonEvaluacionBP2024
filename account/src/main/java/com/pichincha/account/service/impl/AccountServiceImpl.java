@@ -52,7 +52,7 @@ public class AccountServiceImpl implements AccountService {
 
   @Override
   public void updateAccount(Long id, AccountDto accountDto) {
-    log.info("Updating account for client with id: {}", accountDto.getClientId());
+    log.info("Update account for client with id: {}", accountDto.getClientId());
     findAccountById(id)
         .orElseThrow(() -> new AccountNotFoundException(String.format(ACCOUNT_NOT_FOUND_MESSAGE, id)));
     if (Objects.isNull(accountDto.getClientId()) && !Objects.isNull(accountDto.getClientIdentification())) {
@@ -65,7 +65,10 @@ public class AccountServiceImpl implements AccountService {
 
   @Override
   public void deleteAccount(Long id) {
-
+    log.info("Delete account with id: {}", id);
+    findAccountById(id)
+        .orElseThrow(() -> new AccountNotFoundException(String.format(ACCOUNT_NOT_FOUND_MESSAGE, id)));
+    accountRepository.deleteById(id);
   }
 
   @Override
