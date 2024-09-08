@@ -85,7 +85,8 @@ public class AccountServiceImpl implements AccountService {
 
   @Override
   public List<AccountDto> findAllAccounts() {
-    return null;
+    log.info("Finding all accounts");
+    return accountRepository.findAll().stream().map(accountMapper::toDto).toList();
   }
 
   @Override
