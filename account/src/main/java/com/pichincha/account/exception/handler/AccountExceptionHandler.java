@@ -5,11 +5,11 @@ import static com.pichincha.account.util.AccountConstants.DATA_ACCESS_EXCEPTION_
 import static com.pichincha.account.util.AccountConstants.FEIGN_ERROR_MESSAGE;
 import static com.pichincha.account.util.AccountConstants.GENERIC_EXCEPTION_MESSAGE;
 
+import com.pichincha.account.exception.AccountBadRequestException;
 import com.pichincha.account.exception.AccountNotFoundException;
 import feign.FeignException;
 import java.util.HashMap;
 import java.util.Map;
-import org.apache.coyote.BadRequestException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataAccessException;
@@ -67,8 +67,8 @@ public class AccountExceptionHandler extends ResponseEntityExceptionHandler {
     return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(DATA_ACCESS_EXCEPTION_MESSAGE);
   }
 
-  @ExceptionHandler(BadRequestException.class)
-  public ResponseEntity<Object> handleBadRequestException(BadRequestException ex) {
+  @ExceptionHandler(AccountBadRequestException.class)
+  public ResponseEntity<Object> handleBadRequestException(AccountBadRequestException ex) {
     log.error(ex.getMessage(), ex);
     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
   }

@@ -4,6 +4,7 @@ import static com.pichincha.account.util.AccountConstants.ACCOUNT_NOT_FOUND_MESS
 import static com.pichincha.account.util.AccountConstants.CLIENT_NOT_FOUND_MESSAGE;
 import static lombok.AccessLevel.PRIVATE;
 
+import com.pichincha.account.domain.entity.Account;
 import com.pichincha.account.exception.AccountNotFoundException;
 import com.pichincha.account.repository.AccountRepository;
 import com.pichincha.account.repository.ClientFeignClient;
@@ -55,12 +56,18 @@ public class AccountServiceImpl implements AccountService {
     log.info("Update account for client with id: {}", accountDto.getClientId());
     findAccountById(id)
         .orElseThrow(() -> new AccountNotFoundException(String.format(ACCOUNT_NOT_FOUND_MESSAGE, id)));
-    if (Objects.isNull(accountDto.getClientId()) && !Objects.isNull(accountDto.getClientIdentification())) {
+    if (!Objects.isNull(accountDto.getClientId()) && !Objects.isNull(accountDto.getClientIdentification())) {
       ClientDto clientDto = findClientByIdentification(accountDto.getClientIdentification());
       accountDto.setClientId(clientDto.getId());
     }
     accountDto.setId(id);
-    accountRepository.save(accountMapper.toEntity(accountDto));
+    Account account = accountMapper.toEntity(accountDto);
+    if (account.getMovements() != null) {
+      account.getMovements().forEach(accountItem -> {
+        accountItem.setAccount(account);
+      });
+    }
+    accountRepository.save(account);
   }
 
   @Override

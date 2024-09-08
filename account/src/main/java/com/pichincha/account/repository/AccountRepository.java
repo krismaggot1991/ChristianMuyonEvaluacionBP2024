@@ -14,7 +14,7 @@ public interface AccountRepository extends JpaRepository<Account, Long> {
 
   Optional<Account> findByNumber(String number);
 
-  @Query(value = "SELECT a.* FROM accounts a" +
+  @Query(value = "SELECT DISTINCT a.* FROM accounts a" +
       " JOIN movements m on a.account_id = m.account_id" +
       " WHERE a.client_id = ?1" +
       " AND m.date BETWEEN ?2 AND ?3", nativeQuery = true)

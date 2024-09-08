@@ -86,11 +86,13 @@ public class MovementServiceImpl implements MovementService {
   @Override
   public void updateMovement(Long id, MovementDto movementDto) {
     log.info("Update movement for account with if: {}", movementDto.getAccountId());
-    findMovementById(id)
+    MovementDto movementDtoDB = findMovementById(id)
         .orElseThrow(() -> new AccountNotFoundException(String.format(MOVEMENT_NOT_FOUND_MESSAGE, id)));
     AccountDto accountDto = findAccountByNumber(movementDto.getAccountNumber());
     movementDto.setAccountId(accountDto.getId());
     movementDto.setId(id);
+    BigDecimal initialBalance = accountDto.getInitialBalance();
+    movementDto.setBalance(movementDtoDB.getBalance());
     movementRepository.save(movementMapper.toEntity(movementDto));
   }
 
