@@ -1,14 +1,18 @@
-package com.pichincha.client.exception.handler;
+package com.pichincha.account.exception.handler;
 
-import static lombok.AccessLevel.PRIVATE;
 
-import com.pichincha.client.exception.NotFoundException;
+import static com.pichincha.account.util.AccountConstants.DATA_ACCESS_EXCEPTION_MESSAGE;
+import static com.pichincha.account.util.AccountConstants.FEIGN_ERROR_MESSAGE;
+import static com.pichincha.account.util.AccountConstants.GENERIC_EXCEPTION_MESSAGE;
+
+import feign.FeignException;
 import java.util.HashMap;
 import java.util.Map;
-import lombok.experimental.FieldDefaults;
+import org.apache.coyote.BadRequestException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataAccessException;
+import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -21,18 +25,17 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 @ControllerAdvice
-@FieldDefaults(level = PRIVATE, makeFinal = true)
-public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
+public class AccountExceptionHandler extends ResponseEntityExceptionHandler {
 
-  String GENERIC_ERROR_MESSAGE = "Internal Server Error";
-  String DATA_ERROR_MESSAGE = "Data error";
-  Logger log = LoggerFactory.getLogger(RestResponseEntityExceptionHandler.class);
+  private final Logger log = LoggerFactory.getLogger(AccountExceptionHandler.class);
 
   @Override
   protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatusCode status,
       WebRequest request) {
+
     Map<String, String> errors = new HashMap<>();
     ex.getBindingResult().getAllErrors().forEach((error) -> {
+
       String fieldName = ((FieldError) error).getField();
       String message = error.getDefaultMessage();
       errors.put(fieldName, message);
@@ -42,8 +45,14 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
 
   @ExceptionHandler(Exception.class)
   public ResponseEntity<Object> handleGenericException(Exception ex) {
-    log.error(GENERIC_ERROR_MESSAGE, ex);
-    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(GENERIC_ERROR_MESSAGE);
+    log.error(GENERIC_EXCEPTION_MESSAGE, ex);
+    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(GENERIC_EXCEPTION_MESSAGE);
+  }
+
+  @ExceptionHandler(FeignException.class)
+  public ResponseEntity<Object> handleFeignException(FeignException ex) {
+    log.error(FEIGN_ERROR_MESSAGE, ex);
+    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(FEIGN_ERROR_MESSAGE);
   }
 
   @ExceptionHandler(NotFoundException.class)
@@ -55,7 +64,12 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
   @ExceptionHandler(DataAccessException.class)
   public ResponseEntity<Object> handleDataIntegrityViolationException(DataAccessException ex) {
     log.error(ex.getMessage(), ex);
-    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(DATA_ERROR_MESSAGE);
+    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(DATA_ACCESS_EXCEPTION_MESSAGE);
   }
 
+  @ExceptionHandler(BadRequestException.class)
+  public ResponseEntity<Object> handleBadRequestException(BadRequestException ex) {
+    log.error(ex.getMessage(), ex);
+    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
+  }
 }

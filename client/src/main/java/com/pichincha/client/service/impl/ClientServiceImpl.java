@@ -1,6 +1,6 @@
 package com.pichincha.client.service.impl;
 
-import static com.pichincha.client.util.Constants.CLIENT_NOT_FOUNDED;
+import static com.pichincha.client.util.ClientConstants.CLIENT_NOT_FOUNDED;
 import static lombok.AccessLevel.PRIVATE;
 
 import com.pichincha.client.domain.entity.Client;
