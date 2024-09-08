@@ -1,12 +1,15 @@
 package com.pichincha.client.controller;
 
 
+import static lombok.AccessLevel.PRIVATE;
+
 import com.pichincha.client.service.ClientService;
 import com.pichincha.client.service.dto.ClientDto;
 import jakarta.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -22,9 +25,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/client")
+@FieldDefaults(level = PRIVATE, makeFinal = true)
 public class ClientController {
 
-  private final ClientService clientService;
+  ClientService clientService;
 
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
