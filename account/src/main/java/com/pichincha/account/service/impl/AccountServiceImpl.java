@@ -45,7 +45,8 @@ public class AccountServiceImpl implements AccountService {
 
   @Override
   public void saveAccountList(List<AccountDto> accountDtoList) {
-
+    log.info("Add list of accounts: {}", accountDtoList);
+    accountDtoList.forEach(this::saveAccount);
   }
 
   @Override
