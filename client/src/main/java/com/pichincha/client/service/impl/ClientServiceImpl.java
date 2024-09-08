@@ -2,6 +2,7 @@ package com.pichincha.client.service.impl;
 
 import static lombok.AccessLevel.PRIVATE;
 
+import com.pichincha.client.domain.entity.Client;
 import com.pichincha.client.repository.ClientRepository;
 import com.pichincha.client.service.ClientService;
 import com.pichincha.client.service.dto.ClientDto;
@@ -30,7 +31,9 @@ public class ClientServiceImpl implements ClientService {
 
   @Override
   public void saveClientList(List<ClientDto> clientDtoList) {
-
+    log.info("Add list of clients: {}", clientDtoList);
+    List<Client> clients = clientDtoList.stream().map(clientMapper::toEntity).toList();
+    clientRepository.saveAll(clients);
   }
 
   @Override
