@@ -91,6 +91,12 @@ public class AccountServiceImpl implements AccountService {
 
   @Override
   public StatusReportDto generateBankStatementReport(LocalDate initialDate, LocalDate endDate, String clientIdentification) {
-    return null;
+    log.info("Generate bank statement report");
+    ClientDto clientDto = findClientByIdentification(clientIdentification);
+    List<AccountDto> accountDtoList = accountRepository.findAccountsAndMovementsByClientIdAndDate(clientDto.getId(), initialDate, endDate)
+        .stream().map(accountMapper::toDto).toList();
+    StatusReportDto statusReportDto = new StatusReportDto(clientDto.getName(), accountDtoList);
+    log.info("Status Report: {}", statusReportDto);
+    return statusReportDto;
   }
 }
