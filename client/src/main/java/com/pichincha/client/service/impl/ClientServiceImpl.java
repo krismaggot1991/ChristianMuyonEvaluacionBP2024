@@ -57,12 +57,14 @@ public class ClientServiceImpl implements ClientService {
 
   @Override
   public Optional<ClientDto> findClientById(Long id) {
-    return Optional.empty();
+    log.info("Find client with id: {}", id);
+    return clientRepository.findById(id).map(clientMapper::toDto);
   }
 
   @Override
   public Optional<ClientDto> findClientByIdentification(String identification) {
-    return Optional.empty();
+    log.info("Find client with identification: {}", identification);
+    return clientRepository.findByIdentification(identification).map(clientMapper::toDto);
   }
 
   @Override
