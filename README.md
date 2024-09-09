@@ -142,7 +142,7 @@ docker-compose down
 
 ## Diagrama de componentes la solución
 
-Puedes ver el diagrama de componentes de la arquitectura en IcePanel [aquí](https://s.icepanel.io/JMDj0OpEMLBwov/f7Hd).
+Puedes ver el diagrama de componentes de la arquitectura en IcePanel <a href="https://s.icepanel.io/JMDj0OpEMLBwov/f7Hd" target="_blank">aquí</a>.
 
 ![diagrama](diagrama.png)
 
@@ -150,3 +150,11 @@ Puedes ver el diagrama de componentes de la arquitectura en IcePanel [aquí](htt
 
 En la ruta principal del proyecto, existe un archivo llamado `ChristianMuyonEvaluacionBP2024.postman_collection.json` que contiene una colección de
 pruebas para todos los métodos de los servicios. Puedes importar este archivo a Postman para probar los endpoints de manera fácil.
+
+## Documentación del API
+
+La documentación completa de los endpoints de la API está disponible en el archivo `swagger.yml` ubicado en la ruta principal del proyecto. Este
+archivo sigue el formato de OpenAPI y puede ser utilizado para explorar y probar los endpoints de la aplicación con herramientas compatibles con
+Swagger, como Swagger UI o Postman.
+
+![swagger](swaggerImage.png)
