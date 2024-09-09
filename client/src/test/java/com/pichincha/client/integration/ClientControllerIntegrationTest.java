@@ -32,7 +32,7 @@ class ClientControllerIntegrationTest {
   ClientDto clientDto;
 
   @BeforeEach
-  public void setup() {
+  void setup() {
     clientDto = new ClientDto();
     clientDto.setName("Christian Muyon");
     clientDto.setGender(Gender.MALE);
@@ -45,7 +45,7 @@ class ClientControllerIntegrationTest {
   }
 
   @Test
-  public void testSaveClient() throws Exception {
+  void testSaveClient() throws Exception {
     String clientJson = objectMapper.writeValueAsString(clientDto);
     ResultActions response = mockMvc.perform(post("/api/client")
         .contentType(MediaType.APPLICATION_JSON)
@@ -55,7 +55,7 @@ class ClientControllerIntegrationTest {
   }
 
   @Test
-  public void testFindAllClients() throws Exception {
+  void testFindAllClients() throws Exception {
     mockMvc.perform(get("/api/client")
             .contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().isOk())
